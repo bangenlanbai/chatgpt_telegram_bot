@@ -7,14 +7,17 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PIP_NO_CACHE_DIR=off
 ENV PIP_DISABLE_PIP_VERSION_CHECK=on
 ENV PIP_DEFAULT_TIMEOUT=100
+ENV PIP_ROOT_USER_ACTION=ignore
 
-RUN apt-get update
-RUN apt-get install -y python3 python3-pip python-dev build-essential python3-venv
-
-RUN mkdir -p /code
+RUN apt-get update && \n
+    apt-get install -y python3 python3-pip python-dev build-essential python3-venv && \n
+    python -m pip install --upgrade pip && \n
+    pip3 install -r requirements.txt --root-user-action=ignore && \n
+    mkdir -p /code
+    
 ADD . /code
 WORKDIR /code
 
-RUN pip3 install -r requirements.txt
+
 
 CMD ["bash"]
